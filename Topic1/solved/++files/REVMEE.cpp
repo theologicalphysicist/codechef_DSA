@@ -1,24 +1,25 @@
 using namespace std;
 
 #include <iostream>
-#include <string>
+// #include <string>
 
 const char *d = "FINE";
 
 int main() {
-	// printf("%d\n", argc);
-	// std::cout << argv[0] << '\n';
 
-	string input_l = "";
-	string input_r = "";
+	string input = "";
 
-	cin >> input_l;
-	cin >> input_r;
+	cin >> input;
+	// cout << input << '\n';
+	int n = stoi(input);
 
-	for (int i = stoi(input_l); i < (stoi(input_r) + 1); i++) {
-		if (i % 2 != 0) {
-			printf("%d ", i);
-		}
+	string a[n] = {};
+	for (int i = 0; i < n; i++) {
+		cin >> a[i];
+	}
+
+	for (int i = n - 1; i > -1; i--) {
+		cout << a[i]<< ' ';
 	}
 
 	return 0;
