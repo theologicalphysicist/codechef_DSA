@@ -3,7 +3,7 @@ using namespace std;
 #include <iostream>
 #include <string>
 
-#define D "FINE"
+// #define D "FINE"
 
 const char *d = "FINE";
 
