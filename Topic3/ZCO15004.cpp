@@ -4,99 +4,92 @@ using namespace std;
 #include <string>
 #include <vector>
 #include <fstream>
+#include <stdlib.h>
 
 const char *D = "FINE";
 const int MAX_X = 100000;
 const int MAX_Y = 500;
 
-string split(string s, string delimiter)[] {
-	vector<string> out_v;
+vector<string> split(string s, char delimiter) {
+	vector<string> out;
 	string sub = "";
 
 	for (int i = 0; i < s.size(); i++) {
-		if (s[i] == delimiter) {
-			out.push_back(sub);
-			sub = "";
-		} else {
-			sub += s[i];
-		}
-	}
+        if (s[i] == delimiter) {
+            out.push_back(sub);
+            sub = "";
+        } else {
+            sub += s[i];
+        }
+    }
 
-	const int LENGTH = out_v.size();
-	string out[LENGTH];
+    out.push_back(sub);
 
-	for (int i = 0; i < LENGTH; i++) {
-		out[i] = out_v[i];
-	}
-
-	return out;
+    return out;
 }
 
-void Rectangle(int argc, char const *argv[]) {
+// void Rectangle(int argc, char const *argv[]) {
 
-}
+// }
 
 int main(int argc, char const *argv[]) {
-
 	string line;
 	std::ifstream DATAFILE("txt/ZCO15004_INPUT");
 
 	getline(DATAFILE, line);
 	const int N = stoi(line);
 
+    //_ GET INPUTS
+    vector<vector<string>> POINTS;
 	for (int i = 0; i < N; i++) {
 		getline(DATAFILE, line);
-		const string POINT[2] = split(line, " ");
+        POINTS.push_back(split(line, ' '));
 	}
 
+    vector<vector<int>> rects = {{0, 0, 100000, 500}};
 
-	// Rectangle();
+    for (vector<string> POINT : POINTS) {
+        const int X = stoi(POINT[0]);
+        const int Y = stoi(POINT[1]);
 
-	// std::cout << argv[0] << '\n';
-	// string in = "";
-	// std::cin >> in;
-	// string line;
-	//
-	// getline(datafile, line);
-	//
-	// int n = stoi(line);
-	// std::cout << line << '\n';
-	// std::vector<pair<int, int>> xy;
-	//
-	// for (int i = 0; i < n; i++) {
-	// 	// string x = "";
-	// 	// std::cin >> x;
-	// 	// string y = "";
-	// 	// std::cin >> y;
-	// 	getline(datafile, line);
-	// 	// std::cout << to_string(line.size()) << "\n";
-	// 	// pair<int, string>
-	//
-	// 	xy.push_back(
-	// 		make_pair(
-	// 			stoi(line.substr(0, line.find(" "))),
-	// 			stoi(line.substr(line.find(" "), line.size() - 1))
-	// 		)
-	// 	);
-	// }
-	//
-	// datafile.close();
-	//
-	// int max_rect = xy[1].first * max_Y;
-	//
-	// for (int i = 1; i < n - 1; i++) {
-	// 	int rect = (xy[i].first - xy[i- 1].first) * max_Y;
-	// 	max_rect = (rect > max_rect ? rect : max_rect);
-	// }
-	//
-	// max_rect = (max_X - xy[n - 1].first)
-	//
-	// return 0;
+        for (int i = 0; i < rects.size(); i++) {
+            const int END_X = rects[i][2];
+            const int START_X = rects[i][0];
+
+            if (X > START_X and X < END_X) {
+                const int END_Y = rects[i][3];
+                const auto ITERATOR = rects.begin() + i;
+
+                rects.erase(ITERATOR);
+
+                rects.push_back({START_X, 0, X, END_Y});
+                rects.push_back({X, 0, END_X, END_Y});
+
+            }
+
+        }
+
+    }
+
+    DATAFILE.close();
+
+    int answer = 0;
+    for (const vector<int> RECT : rects) {
+        const int AREA = (RECT[2] - RECT[0]) * (RECT[3] - RECT[1]);
+        answer = (AREA > answer) ? AREA : answer;
+    }
+
+/*    cout
+        << "MAX X: " << max_x << "\n"
+        << "MAX Y: " << max_y << "\n"
+        << "MIN X: " << min_x << "\n"
+        << "MIN Y: " << min_y << endl;
+*/
+
+    cout << "ANSWER: " << answer << endl;
+    cout << "TOTAL RECTANGLES: " << rects.size() << endl;
+
+    return 0;
 }
 
-//
-// void printPairVector(vector<pair<int, int>> v) {
-// 	for (pair<int, int> co_ord: v) {
-// 		std::cout << " [" + to_string(co_ord.first) + ", " + to_string(co_ord.second) + "]"<< ',';
-// 	}
-// }
+//TODO: Create .sh for executing with clang

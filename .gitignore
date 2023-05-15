@@ -1,0 +1,8 @@
+**/*/.gdbinit
+**/*/.gdb_history
+**/*/*.sh
+**/*/*.class
+**/*/*.exe
+**/*/txt
+.idea
+**/*/bin
